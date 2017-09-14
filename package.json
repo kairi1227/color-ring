@@ -1,5 +1,7 @@
 {
   "name": "color.ring",
+  "author": "xuqiang",
+  "email": "kairi1227@126.com",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
