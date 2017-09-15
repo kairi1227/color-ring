@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {ReactSVGPanZoom} from 'react-svg-pan-zoom';
-import {hslToRgb, colorPicker} from './common';
+import {hslToRgb, colorPicker, rgbToHsl} from './common';
 import PropTypes from 'prop-types';
 
 class ColorRing extends Component {
@@ -11,13 +11,13 @@ class ColorRing extends Component {
 			color: {
 				h: 0,
 				s: 1,
-				l: 0.5,
-				a: 1,
+				l: 0.5
 			},
 			image: require('./ring.png'),
 			arrow: <polygon points="25 50 0 0 50 0 25 50"/>,
 			scale: 1
-		}
+		};
+		this.getPointer = this.getPointer.bind(this);
 	}
 
 	componentWillMount() {
@@ -49,7 +49,8 @@ class ColorRing extends Component {
 		return (
 			<div className={className} style={changeBackground && {backgroundColor: `rgb(${rgb.r}, ${rgb.g}, ${rgb.b})`}}>
 				<ReactSVGPanZoom width={style.width} height={style.height}
-				                 toolbarPosition="none" tool={'none'} detectPinchGesture={false} detectAutoPan={false} miniaturePosition="none"
+				                 toolbarPosition="none" tool={'none'} detectPinchGesture={false} detectAutoPan={false}
+				                 miniaturePosition="none"
 				                 detectWheel={false}
 				                 SVGBackground={changeBackground && colorPicker(rgb)}
 				                 onTouchEnd={() => this.setState({isMove: false})}
@@ -57,34 +58,31 @@ class ColorRing extends Component {
 					                 if (isMove) {
 						                 e.preventDefault();
 						                 e.stopPropagation();
-						                 const R = Math.sqrt((radius - e.changedPoints[0].x) * (radius - e.changedPoints[0].x) + (radius - e.changedPoints[0].y) * (radius - e.changedPoints[0].y));
-						                 let cx = (radius - e.changedPoints[0].x) * radius / R;
-						                 let cy = (radius - e.changedPoints[0].y) * radius / R;
-						                 if (isNaN(cx) || isNaN(cy)) return;
-						                 let a = Math.asin((radius - e.changedPoints[0].y) / R) * 180 / Math.PI;
-						                 if (isNaN(a)) a = rotate;
-						                 a = 90 - a;
-						                 a = (e.changedPoints[0].x - radius) < 0 ? 360 - a : a;
-						                 this.setState({rotate: (a + adjustAngle) % 360, x: radius - cx, y: radius - cy, color: {...color, h: (a % 360)}}, () => {
-						                 	if(this.props.onChange) {
-						                 		this.props.onChange(colorPicker(rgb));
-						                  }
+						                 const {cx, cy, a} = this.getPointer(radius, e.changedPoints[0].x, e.changedPoints[0].y, rotate);
+						                 this.setState({
+							                 rotate: (a + adjustAngle) % 360,
+							                 x: radius - cx,
+							                 y: radius - cy,
+							                 color: {...color, h: (a % 360)}
+						                 }, () => {
+							                 if (this.props.onChange) {
+								                 this.props.onChange({htmlColor: colorPicker(rgb), rgb, hsl: color});
+							                 }
 						                 });
 					                 }
 				                 }}
 				                 onMouseMove={e => {
 					                 if (isMove) {
 						                 e.preventDefault();
-						                 const R = Math.sqrt((radius - e.x) * (radius - e.x) + (radius - e.y) * (radius - e.y));
-						                 const cx = (radius - e.x) * radius / R;
-						                 const cy = (radius - e.y) * radius / R;
-						                 let a = Math.asin((radius - e.y) / R) * 180 / Math.PI;
-						                 if (isNaN(a)) a = rotate;
-						                 a = 90 - a;
-						                 a = (e.x - radius) < 0 ? 360 - a : a;
-						                 this.setState({rotate: (a + adjustAngle) % 360, x: radius - cx, y: radius - cy, color: {...color, h: (a % 360)}}, () => {
-							                 if(this.props.onChange) {
-								                 this.props.onChange(colorPicker(rgb));
+						                 const {cx, cy, a} = this.getPointer(radius, e.x, e.y, rotate);
+						                 this.setState({
+							                 rotate: (a + adjustAngle) % 360,
+							                 x: radius - cx,
+							                 y: radius - cy,
+							                 color: {...color, h: (a % 360)}
+						                 }, () => {
+							                 if (this.props.onChange) {
+								                 this.props.onChange({htmlColor: colorPicker(rgb), rgb, hsl: color});
 							                 }
 						                 });
 					                 }
@@ -106,12 +104,23 @@ class ColorRing extends Component {
 			</div>
 		);
 	}
+
+	getPointer(radius, x, y, rotate) {
+		const R = Math.sqrt((radius - x) * (radius - x) + (radius - y) * (radius - y));
+		const cx = (radius - x) * radius / R;
+		const cy = (radius - y) * radius / R;
+		let a = Math.asin((radius - y) / R) * 180 / Math.PI;
+		if (isNaN(a)) a = rotate;
+		a = 90 - a;
+		a = (x - radius) < 0 ? 360 - a : a;
+		return {cx, cy, a};
+	}
 }
 
 ColorRing.propTypes = {
 	radius: PropTypes.number,
 	offSet: PropTypes.number,
-	image:PropTypes.object,
+	image: PropTypes.object,
 	arrow: PropTypes.object,
 	onChange: PropTypes.func,
 	className: PropTypes.string,
@@ -119,5 +128,9 @@ ColorRing.propTypes = {
 	adjustAngle: PropTypes.number,
 	scale: PropTypes.number
 };
+
+ColorRing.hslToRgb = hslToRgb;
+ColorRing.rgbToHSL = rgbToHsl;
+ColorRing.colorPicker = colorPicker;
 
 export default ColorRing;

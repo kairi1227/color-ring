@@ -1,10 +1,4 @@
-export const toHsl = (rgb) => {
-	const hsl = rgbToHsl(rgb[0], rgb[1], rgb[2]);
-	return {h: hsl.h * 360, s: hsl.s, l: hsl.l};
-};
-
-const rgbToHsl = (r, g, b) => {
-
+export const rgbToHsl = ({r, g, b}) => {
 	r = bound01(r, 255);
 	g = bound01(g, 255);
 	b = bound01(b, 255);
@@ -33,7 +27,7 @@ const rgbToHsl = (r, g, b) => {
 
 		h /= 6;
 	}
-	return {h, s, l};
+	return {h: h * 360, s, l};
 };
 
 export const hslToRgb = ({h, s, l}) => {

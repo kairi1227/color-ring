@@ -9,9 +9,16 @@
 |radius  | `180`| number | circle's radius|
 |image  | `require('./ring.png')`| Object | circle's background image|
 |className  | `''`| string | ring component class name|
-|changeBackground  | `false`| boolean | background color is change by onChange event or not.|
+|changeBackground  | `false`| boolean | background color is changed by onChange event or not.|
 |adjustAngle  | `6`| number | correction arrow angle|
 |scale  | `1`| number | arrow's scale|
+
+# Available Methods
+|Method|Props|Return|Description|
+|-----|------|-----|-----|
+|hslToRgb|`{h, s, l}`|`{r, g, b}`|convert hst to rgb|
+|rgbToHsl|`{r, g, b}`|`{h, s, l}`|convert rgb to hsl|
+|colorPicker|`rgb: {r, g, b}`|`#000000`|get html color by rgb|
 
 # License
     MIT License
