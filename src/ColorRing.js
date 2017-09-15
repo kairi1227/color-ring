@@ -15,14 +15,21 @@ class ColorRing extends Component {
 				a: 1,
 			},
 			image: require('./ring.png'),
-			arrow: <polygon points="25 50 0 0 50 0 25 50"/>
+			arrow: <polygon points="25 50 0 0 50 0 25 50"/>,
+			scale: 1
 		}
 	}
 
 	componentWillMount() {
-		const {radius, offset = 20, image, arrow} = this.props;
+		const {radius, offset = 20, image, arrow, scale} = this.props;
 		const {state} = this;
-		this.setState({radius: radius || state.radius, x: (radius || state.radius) - offset, image: image || state.image, arrow: arrow || state.arrow});
+		this.setState({
+			radius: radius || state.radius,
+			x: (radius || state.radius) - offset,
+			image: image || state.image,
+			arrow: arrow || state.arrow,
+			scale: scale || state.scale
+		});
 	}
 
 	componentDidMount() {
@@ -32,17 +39,17 @@ class ColorRing extends Component {
 	}
 
 	render() {
-		const {radius, isMove, rotate, x, y, color, image, arrow} = this.state;
+		const {radius, isMove, rotate, x, y, color, image, arrow, scale} = this.state;
 		const style = {
 			height: radius * 2,
 			width: radius * 2
 		};
-		const {className = '', changeBackground, adjustAngle = 0} = this.props;
+		const {className = '', changeBackground, adjustAngle = 6} = this.props;
 		const rgb = hslToRgb(color);
 		return (
 			<div className={className} style={changeBackground && {backgroundColor: `rgb(${rgb.r}, ${rgb.g}, ${rgb.b})`}}>
 				<ReactSVGPanZoom width={style.width} height={style.height}
-				                 toolbarPosition="none" tool={'none'} detectAutoPan={false} miniaturePosition="none"
+				                 toolbarPosition="none" tool={'none'} detectPinchGesture={false} detectAutoPan={false} miniaturePosition="none"
 				                 detectWheel={false}
 				                 SVGBackground={changeBackground && colorPicker(rgb)}
 				                 onTouchEnd={() => this.setState({isMove: false})}
@@ -85,7 +92,7 @@ class ColorRing extends Component {
 				>
 					<svg width={style.width} height={style.height}>
 						<image xlinkHref={image} width={style.width} height={style.height}/>
-						<g fill={'#c9c9c9'} transform={`translate(${x}, ${y}) rotate(${rotate} 0 0) scale(${1})`}
+						<g fill={'#c9c9c9'} transform={`translate(${x}, ${y}) rotate(${rotate} 0 0) scale(${scale})`}
 						   onTouchStart={e => {
 							   e.preventDefault();
 							   e.stopPropagation();
@@ -109,7 +116,8 @@ ColorRing.propTypes = {
 	onChange: PropTypes.func,
 	className: PropTypes.string,
 	changeBackground: PropTypes.bool,
-	adjustAngle: PropTypes.number
+	adjustAngle: PropTypes.number,
+	scale: PropTypes.number
 };
 
 export default ColorRing;
