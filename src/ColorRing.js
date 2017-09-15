@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import './styles.css';
 import {ReactSVGPanZoom} from 'react-svg-pan-zoom';
 import {hslToRgb, colorPicker} from './common';
 import PropTypes from 'prop-types';
@@ -38,13 +37,14 @@ class ColorRing extends Component {
 			height: radius * 2,
 			width: radius * 2
 		};
+		const {className = '', changeBackground, adjustAngle = 0} = this.props;
 		const rgb = hslToRgb(color);
 		return (
-			<div className="color-ring" id={'ring'} style={{backgroundColor: `rgb(${rgb.r}, ${rgb.g}, ${rgb.b})`}}>
+			<div className={className} style={changeBackground && {backgroundColor: `rgb(${rgb.r}, ${rgb.g}, ${rgb.b})`}}>
 				<ReactSVGPanZoom width={style.width} height={style.height}
 				                 toolbarPosition="none" tool={'none'} detectAutoPan={false} miniaturePosition="none"
 				                 detectWheel={false}
-				                 SVGBackground={colorPicker(rgb)}
+				                 SVGBackground={changeBackground && colorPicker(rgb)}
 				                 onTouchEnd={() => this.setState({isMove: false})}
 				                 onTouchMove={e => {
 					                 if (isMove) {
@@ -58,7 +58,7 @@ class ColorRing extends Component {
 						                 if (isNaN(a)) a = rotate;
 						                 a = 90 - a;
 						                 a = (e.changedPoints[0].x - radius) < 0 ? 360 - a : a;
-						                 this.setState({rotate: (a + 9) % 360, x: radius - cx, y: radius - cy, color: {...color, h: (a % 360)}}, () => {
+						                 this.setState({rotate: (a + adjustAngle) % 360, x: radius - cx, y: radius - cy, color: {...color, h: (a % 360)}}, () => {
 						                 	if(this.props.onChange) {
 						                 		this.props.onChange(colorPicker(rgb));
 						                  }
@@ -75,7 +75,7 @@ class ColorRing extends Component {
 						                 if (isNaN(a)) a = rotate;
 						                 a = 90 - a;
 						                 a = (e.x - radius) < 0 ? 360 - a : a;
-						                 this.setState({rotate: (a + 9) % 360, x: radius - cx, y: radius - cy, color: {...color, h: (a % 360)}}, () => {
+						                 this.setState({rotate: (a + adjustAngle) % 360, x: radius - cx, y: radius - cy, color: {...color, h: (a % 360)}}, () => {
 							                 if(this.props.onChange) {
 								                 this.props.onChange(colorPicker(rgb));
 							                 }
@@ -106,7 +106,10 @@ ColorRing.propTypes = {
 	offSet: PropTypes.number,
 	image:PropTypes.object,
 	arrow: PropTypes.object,
-	onChange: PropTypes.func
+	onChange: PropTypes.func,
+	className: PropTypes.string,
+	changeBackground: PropTypes.bool,
+	adjustAngle: PropTypes.number
 };
 
 export default ColorRing;

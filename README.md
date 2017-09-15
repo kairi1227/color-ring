@@ -6,6 +6,9 @@
 * offset: number, arrow's offset
 * radius: circle's radius
 * image: circle's background image, eg: image=require('./ring.png')
+* className: ring component class name
+* changeBackground: background color is change by onChange event or not.
+* adjustAngle: correction arrow angle.
      
     
 # License
