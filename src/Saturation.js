@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {hslToRgb, colorPicker, rgbToHsl} from './common';
 import PropTypes from 'prop-types';
 
-const ColorRingH = class extends Component {
+const Saturation = class extends Component {
 	constructor() {
 		super(...arguments);
 		this.state = {color: {r: 255, g: 0, b: 0}, radius: 150, stroke: 80};//radius min 150
@@ -34,10 +34,10 @@ const ColorRingH = class extends Component {
 	}
 };
 
-ColorRingH.propTypes = {
+Saturation.propTypes = {
 	color: PropTypes.object,
 	radius: PropTypes.number,
 	stroke: PropTypes.number
 };
 
-export default ColorRingH;
+export default Saturation;
