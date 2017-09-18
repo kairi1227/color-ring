@@ -130,7 +130,7 @@ ColorRing.propTypes = {
 };
 
 ColorRing.hslToRgb = hslToRgb;
-ColorRing.rgbToHSL = rgbToHsl;
+ColorRing.rgbToHsl = rgbToHsl;
 ColorRing.colorPicker = colorPicker;
 
 export default ColorRing;
