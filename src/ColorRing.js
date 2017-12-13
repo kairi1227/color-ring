@@ -14,7 +14,7 @@ class ColorRing extends Component {
 				l: 0.5
 			},
 			image: require('./ring.png'),
-			arrow: <polygon points="25 50 0 0 50 0 25 50"/>,
+			arrow: null,
 			scale: 1
 		};
 		this.getPointer = this.getPointer.bind(this);
@@ -27,7 +27,7 @@ class ColorRing extends Component {
 			radius: radius || state.radius,
 			x: (radius || state.radius) - offset,
 			image: image || state.image,
-			arrow: arrow || state.arrow,
+			arrow: arrow || <polygon points="25 50 0 0 50 0 25 50"/>,
 			scale: scale || state.scale
 		});
 	}

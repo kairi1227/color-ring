@@ -1,9 +1,23 @@
 {
-  "name": "color.ring",
-  "author": "xuqiang",
-  "email": "kairi1227@126.com",
+  "name": "react-color-ring",
   "version": "0.1.0",
-  "private": true,
+  "private": false,
+  "author": "kairi",
+  "email": "kairi1227@126.com",
+  "license": "MIT",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kairi1227/color-ring.git"
+  },
+  "files": [
+    "dist"
+  ],
+  "keywords": [
+    "react",
+    "color",
+    "ring"
+  ],
   "dependencies": {
     "react": "^15.6.1",
     "react-dom": "^15.6.1",
@@ -12,8 +26,15 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build": "webpack",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
+  },
+  "devDependencies": {
+    "babel-loader": "^7.1.2",
+    "webpack": "^3.10.0",
+    "babel-preset-es2015": "^6.0.15",
+    "babel-preset-react": "^6.0.15",
+    "babel-preset-stage-0": "^6.5.0"
   }
 }

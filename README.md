@@ -1,5 +1,8 @@
 # Color-Ring
-    The ring for color picker by svg
+    The ring for color picker by svg.
+
+### Examples 
+![](https://static.oschina.net/uploads/img/201712/13145132_yjdd.png)![](https://static.oschina.net/uploads/img/201712/13145148_OLxT.png)![](https://static.oschina.net/uploads/img/201712/13145159_udHU.png)  
 # Available Props
 |Prop|Default|Type|Description|
 |-----|------|-----|-----|
